@@ -497,10 +497,10 @@ private fun TimelineTurn(
                 Text(turn.candidateResponse, style = MaterialTheme.typography.bodyMedium, color = responseColor)
             }
 
-            if (submittedTurn != null &&
-                (submittedTurn.newMajorErrors.isNotEmpty() || submittedTurn.newMinorErrors.isNotEmpty()) &&
-                submittedTurn.examinerWasLookingFor.isNotEmpty()
-            ) {
+            val hasLiveFeedback = submittedTurn != null &&
+                (submittedTurn.missedConcepts.isNotEmpty() || submittedTurn.examinerWasLookingFor.isNotEmpty())
+
+            if (submittedTurn != null && hasLiveFeedback) {
                 Column(modifier = Modifier.padding(top = 2.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (submittedTurn.missedConcepts.isNotEmpty()) {
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -516,24 +516,45 @@ private fun TimelineTurn(
                         }
                     }
 
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(
-                            "Examiner was looking for",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = statusColor,
-                        )
-                        expectationGroups(submittedTurn).forEach { (label, explanations) ->
-                            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                if (label != null) {
-                                    Text(
-                                        label,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    )
+                    if (submittedTurn.examinerWasLookingFor.isNotEmpty()) {
+                        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Text(
+                                "Examiner was looking for",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = statusColor,
+                            )
+                            expectationGroups(submittedTurn).forEach { (label, explanations) ->
+                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    if (label != null) {
+                                        Text(
+                                            label,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        )
+                                    }
+                                    explanations.forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
                                 }
-                                explanations.forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
                             }
+                        }
+                    }
+                }
+            } else if (events.any { it.severity != null } || !turn.aiSummary.isNullOrBlank()) {
+                // No live feedback was kept for this turn (e.g. the final response), so
+                // fall back to the evaluator's notes from the debrief itself.
+                Column(modifier = Modifier.padding(top = 2.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(
+                        "Evaluator notes",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = statusColor,
+                    )
+                    events.filter { it.explanation.isNotBlank() }.forEach {
+                        Text("• ${it.explanation}", style = MaterialTheme.typography.bodySmall)
+                    }
+                    if (events.isEmpty()) {
+                        turn.aiSummary?.takeIf { it.isNotBlank() }?.let {
+                            Text(it, style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
