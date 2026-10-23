@@ -7,7 +7,7 @@ import android.net.Uri
 import android.widget.Toast
 import dev.benderapps.oralboardsai.BuildConfig
 
-private const val REPORT_EMAIL = "support@oboardsai.com"
+private const val REPORT_EMAIL = "support@benderapps.dev"
 
 /**
  * Opens the user's email app with a pre-filled report about AI-generated content,
