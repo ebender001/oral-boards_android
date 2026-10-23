@@ -2,7 +2,7 @@
 
 Android client for Oral Boards AI. This repo contains only the Android app; the iOS app and website live in their own repositories.
 
-> Status: early scaffold. The app currently shows a placeholder screen.
+> Android port of the iOS app, backed by the same Back4App Cloud Code. No analytics SDKs are included.
 
 ## Tech stack
 
@@ -11,6 +11,7 @@ Android client for Oral Boards AI. This repo contains only the Android app; the 
 - Gradle (Kotlin DSL) with a version catalog (`gradle/libs.versions.toml`)
 - Min SDK 26, target/compile SDK 37
 - Application ID: `dev.benderapps.oralboardsai`
+- OkHttp for Parse Cloud Code (REST) and the TTS service, Google Play Billing for subscriptions, `SpeechRecognizer` for dictation
 
 ## Getting started
 
@@ -19,7 +20,8 @@ Android client for Oral Boards AI. This repo contains only the Android app; the 
    ```
    git clone https://github.com/ebender001/oral-boards_android.git
    ```
-3. Let Gradle sync, then run the `app` configuration on an emulator or device.
+3. Copy the keys from `local.properties.template` into `local.properties` (git-ignored): `PARSE_APP_ID`, `PARSE_CLIENT_KEY`, `PARSE_SERVER_URL`.
+4. Let Gradle sync, then run the `app` configuration on an emulator or device.
 
 Command line:
 
@@ -35,6 +37,9 @@ Command line:
 
 ```
 app/src/main/java/dev/benderapps/oralboardsai/
-  MainActivity.kt      # entry point
-  ui/theme/            # Compose theme (colors, typography)
+  MainActivity.kt      # navigation
+  data/                # Parse REST client, services, models, local progress store
+  billing/             # Play Billing + free-case paywall gate
+  speech/              # examiner audio playback, dictation
+  ui/                  # view model, screens, components, theme
 ```

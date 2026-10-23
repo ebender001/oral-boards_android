@@ -1,0 +1,5 @@
+## Copy these keys into local.properties (which is git-ignored).
+## Values are the same Back4App app the iOS client uses.
+PARSE_APP_ID=
+PARSE_CLIENT_KEY=
+PARSE_SERVER_URL=https://parseapi.back4app.com
