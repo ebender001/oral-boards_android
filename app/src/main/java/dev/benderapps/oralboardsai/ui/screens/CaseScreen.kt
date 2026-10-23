@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import dev.benderapps.oralboardsai.appContainer
 import dev.benderapps.oralboardsai.data.InteractionMode
 import dev.benderapps.oralboardsai.ui.OralCaseViewModel
+import dev.benderapps.oralboardsai.ui.reportAiContent
 import dev.benderapps.oralboardsai.ui.components.BeginCaseButton
 import dev.benderapps.oralboardsai.ui.components.DebriefPreparationCard
 import dev.benderapps.oralboardsai.ui.components.ExamSetupCard
@@ -200,6 +201,15 @@ fun CaseScreen(
                 isPlaybackPaused = playback.isPaused,
                 onRepeat = viewModel::repeatLastInquiry,
                 onTogglePlayback = playback::togglePlayback,
+                onReport = {
+                    context.reportAiContent(
+                        section = "Examiner",
+                        caseTitle = viewModel.caseTitle,
+                        caseId = viewModel.caseId,
+                        turnNumber = currentTurn,
+                        content = viewModel.currentExaminerPrompt,
+                    )
+                },
             )
 
             if (viewModel.hasStartedCase) {

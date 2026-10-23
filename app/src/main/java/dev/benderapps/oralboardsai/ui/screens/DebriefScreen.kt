@@ -65,10 +65,12 @@ import dev.benderapps.oralboardsai.data.OralCaseDebriefResponse
 import dev.benderapps.oralboardsai.export.DebriefPdfExporter
 import dev.benderapps.oralboardsai.ui.OralCaseViewModel
 import dev.benderapps.oralboardsai.ui.components.MetricTile
+import dev.benderapps.oralboardsai.ui.components.ReportProblemButton
 import dev.benderapps.oralboardsai.ui.components.OutlinedOBCard
 import dev.benderapps.oralboardsai.ui.components.SectionHeader
 import dev.benderapps.oralboardsai.ui.components.StatusPill
 import dev.benderapps.oralboardsai.ui.components.humanReadable
+import dev.benderapps.oralboardsai.ui.reportAiContent
 import dev.benderapps.oralboardsai.ui.theme.BrandBlue
 import dev.benderapps.oralboardsai.ui.theme.CriticalRed
 import dev.benderapps.oralboardsai.ui.theme.SuccessGreen
@@ -170,6 +172,15 @@ fun DebriefScreen(
                     debrief = debrief,
                     viewModel = viewModel,
                     onOpenProgress = onOpenProgress,
+                    onReport = {
+                        context.reportAiContent(
+                            section = "Debrief feedback",
+                            caseTitle = debrief.caseInfo.title,
+                            caseId = debrief.caseInfo.id,
+                            turnNumber = null,
+                            content = null,
+                        )
+                    },
                 )
 
                 viewModel.debriefLoadError == null -> Column(
@@ -243,6 +254,7 @@ private fun DebriefContent(
     debrief: OralCaseDebriefResponse,
     viewModel: OralCaseViewModel,
     onOpenProgress: () -> Unit,
+    onReport: () -> Unit,
 ) {
     val summary = debrief.performanceSummary
 
@@ -435,6 +447,8 @@ private fun DebriefContent(
                 }
             }
         }
+
+        ReportProblemButton(onClick = onReport, modifier = Modifier.align(Alignment.CenterHorizontally))
     }
 }
 

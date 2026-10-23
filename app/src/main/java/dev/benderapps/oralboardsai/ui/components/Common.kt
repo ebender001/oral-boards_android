@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Flag
 import androidx.compose.material.icons.rounded.Keyboard
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material3.Icon
@@ -230,5 +231,19 @@ fun SheetTitle(title: String, subtitle: String? = null) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+/** Subtle "Report a problem" link shown next to AI-generated content. */
+@Composable
+fun ReportProblemButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    androidx.compose.material3.TextButton(onClick = onClick, modifier = modifier) {
+        Icon(
+            androidx.compose.material.icons.Icons.Rounded.Flag,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+        )
+        androidx.compose.foundation.layout.Spacer(Modifier.size(6.dp))
+        Text("Report a problem", fontSize = 13.sp)
     }
 }

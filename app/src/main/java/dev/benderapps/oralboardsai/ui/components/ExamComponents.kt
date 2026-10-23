@@ -319,6 +319,7 @@ fun ExaminerCard(
     isPlaybackPaused: Boolean,
     onRepeat: () -> Unit,
     onTogglePlayback: () -> Unit,
+    onReport: () -> Unit,
 ) {
     OBCard {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -343,6 +344,10 @@ fun ExaminerCard(
                     onRepeat = onRepeat,
                     onTogglePlayback = onTogglePlayback,
                 )
+            }
+
+            if (hasPlayedExaminerInquiry) {
+                ReportProblemButton(onClick = onReport, modifier = Modifier.align(Alignment.End))
             }
         }
     }
