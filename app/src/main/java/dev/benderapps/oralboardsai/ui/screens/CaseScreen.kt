@@ -154,7 +154,7 @@ fun CaseScreen(
                         Icon(Icons.Rounded.DeleteOutline, contentDescription = "Reset this case")
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.oralBoards.grouped,
                 ),
             )

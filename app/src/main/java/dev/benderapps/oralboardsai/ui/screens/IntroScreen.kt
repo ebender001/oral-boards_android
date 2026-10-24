@@ -45,7 +45,7 @@ import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.PlayCircle
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.ShowChart
+import androidx.compose.material.icons.automirrored.rounded.ShowChart
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material.icons.rounded.WorkspacePremium
 import androidx.compose.material3.Button
@@ -468,7 +468,7 @@ private fun ProgressDashboardCard(onClick: () -> Unit) {
                 .background(BrandBlue.copy(alpha = 0.14f)),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Rounded.ShowChart, contentDescription = null, tint = Color(0xFF1457B8))
+            Icon(Icons.AutoMirrored.Rounded.ShowChart, contentDescription = null, tint = Color(0xFF1457B8))
         }
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(

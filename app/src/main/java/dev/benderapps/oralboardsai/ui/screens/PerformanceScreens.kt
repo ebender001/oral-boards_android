@@ -20,7 +20,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.ShowChart
+import androidx.compose.material.icons.automirrored.rounded.ShowChart
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -132,7 +132,7 @@ private fun EmptyStateCard() {
                 modifier = Modifier.size(64.dp).clip(CircleShape).background(BrandBlue.copy(alpha = 0.10f)),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(Icons.Rounded.ShowChart, contentDescription = null, tint = BrandBlue, modifier = Modifier.size(30.dp))
+                Icon(Icons.AutoMirrored.Rounded.ShowChart, contentDescription = null, tint = BrandBlue, modifier = Modifier.size(30.dp))
             }
             Text("No saved cases yet", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Text(
@@ -529,6 +529,6 @@ private fun SimpleTopBar(title: String, onBack: () -> Unit) {
                 Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
             }
         },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.oralBoards.grouped),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.oralBoards.grouped),
     )
 }

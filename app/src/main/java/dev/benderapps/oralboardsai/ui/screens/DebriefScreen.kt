@@ -28,7 +28,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material.icons.rounded.ShowChart
+import androidx.compose.material.icons.automirrored.rounded.ShowChart
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -160,7 +160,7 @@ fun DebriefScreen(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.oralBoards.grouped,
                 ),
             )
@@ -341,7 +341,7 @@ private fun DebriefContent(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Icon(Icons.Rounded.ShowChart, contentDescription = null, tint = BrandBlue, modifier = Modifier.size(18.dp))
+                        Icon(Icons.AutoMirrored.Rounded.ShowChart, contentDescription = null, tint = BrandBlue, modifier = Modifier.size(18.dp))
                         Text(
                             "View your progress",
                             modifier = Modifier.weight(1f),

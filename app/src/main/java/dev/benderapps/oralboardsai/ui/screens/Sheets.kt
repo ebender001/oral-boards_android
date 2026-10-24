@@ -34,7 +34,7 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Assessment
 import androidx.compose.material.icons.rounded.VerifiedUser
-import androidx.compose.material.icons.rounded.VolumeUp
+import androidx.compose.material.icons.automirrored.rounded.VolumeUp
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -280,7 +280,7 @@ fun PaywallSheet(reason: PaywallTrigger, onDismiss: () -> Unit) {
                 .background(MaterialTheme.oralBoards.card)
                 .padding(vertical = 4.dp),
         ) {
-            BenefitRow(Icons.Rounded.VolumeUp, "Voice Examiner", "Hear cases and follow-up questions like a real oral exam.")
+            BenefitRow(Icons.AutoMirrored.Rounded.VolumeUp, "Voice Examiner", "Hear cases and follow-up questions like a real oral exam.")
             HorizontalDivider(modifier = Modifier.padding(start = 72.dp))
             BenefitRow(Icons.Rounded.Mic, "Dictated Responses", "Answer out loud and practice speaking under pressure.")
             HorizontalDivider(modifier = Modifier.padding(start = 72.dp))
