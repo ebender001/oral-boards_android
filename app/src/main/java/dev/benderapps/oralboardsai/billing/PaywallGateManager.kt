@@ -33,7 +33,7 @@ class PaywallGateManager(
     }
 
     fun recordCompletedCase() {
-        preferences.completedCaseCount = preferences.completedCaseCount + 1
+        preferences.completedCaseCount += 1
     }
 
     fun requestCompletionLimitPaywall() {

@@ -207,7 +207,7 @@ class OralCaseViewModel(
                 missedConcepts = result.missedConcepts,
                 examinerWasLookingFor = result.examinerWasLookingFor,
             )
-            turns = turns + turn
+            turns += turn
 
             val nextPrompt = result.nextExaminerPrompt.trim()
             val hasFollowUpPrompt = nextPrompt.isNotEmpty()
