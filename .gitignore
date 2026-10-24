@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Local release bundles and R8 mapping files
+/app/release/
