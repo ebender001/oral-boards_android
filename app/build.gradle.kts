@@ -32,8 +32,6 @@ android {
         buildConfigField("String", "PARSE_APP_ID", "\"${localProperty("PARSE_APP_ID")}\"")
         buildConfigField("String", "PARSE_CLIENT_KEY", "\"${localProperty("PARSE_CLIENT_KEY")}\"")
         buildConfigField("String", "PARSE_SERVER_URL", "\"${localProperty("PARSE_SERVER_URL")}\"")
-        // Debug builds only: unlock Pro locally (see local.properties.template). Ignored in release.
-        buildConfigField("boolean", "DEBUG_FORCE_PRO", (localProperty("DEBUG_FORCE_PRO") == "true").toString())
     }
 
     buildTypes {

@@ -3,7 +3,6 @@ package dev.benderapps.oralboardsai.billing
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import dev.benderapps.oralboardsai.BuildConfig
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
@@ -58,10 +57,7 @@ class SubscriptionManager(context: Context) {
     )
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    // Debug builds only; BuildConfig.DEBUG is false in release so this can never unlock Pro there.
-    private val debugForcePro = BuildConfig.DEBUG && BuildConfig.DEBUG_FORCE_PRO
-
-    private val _state = MutableStateFlow(SubscriptionState(isPro = debugForcePro))
+    private val _state = MutableStateFlow(SubscriptionState())
     val state: StateFlow<SubscriptionState> = _state.asStateFlow()
 
     private var hasStarted = false
@@ -177,7 +173,7 @@ class SubscriptionManager(context: Context) {
         activePurchases.forEach { acknowledgeIfNeeded(it) }
 
         _state.value = _state.value.copy(
-            isPro = activePurchases.isNotEmpty() || debugForcePro,
+            isPro = activePurchases.isNotEmpty(),
             errorMessage = if (activePurchases.isNotEmpty()) null else _state.value.errorMessage,
         )
     }

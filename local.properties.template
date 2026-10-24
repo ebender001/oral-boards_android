@@ -3,7 +3,3 @@
 PARSE_APP_ID=
 PARSE_CLIENT_KEY=
 PARSE_SERVER_URL=https://parseapi.back4app.com
-
-## Optional, debug builds only: set to true to unlock Pro (speech) without a subscription.
-## Has no effect in release builds.
-# DEBUG_FORCE_PRO=true
