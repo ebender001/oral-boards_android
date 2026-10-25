@@ -3,6 +3,7 @@ package dev.benderapps.oralboardsai
 import android.app.Application
 import dev.benderapps.oralboardsai.billing.PaywallGateManager
 import dev.benderapps.oralboardsai.billing.SubscriptionManager
+import dev.benderapps.oralboardsai.speech.EarconMuter
 import dev.benderapps.oralboardsai.data.AppPreferences
 import dev.benderapps.oralboardsai.data.ExaminerTTSService
 import dev.benderapps.oralboardsai.data.OralExamService
@@ -38,6 +39,9 @@ class OralBoardsApplication : Application() {
             "Missing Parse configuration. Add PARSE_APP_ID, PARSE_CLIENT_KEY and " +
                 "PARSE_SERVER_URL to local.properties (see local.properties.template)."
         }
+
+        // Undo any dictation mute left behind if the app was killed mid-dictation.
+        EarconMuter(this).restore()
 
         container = AppContainer(this)
         container.subscriptionManager.start()

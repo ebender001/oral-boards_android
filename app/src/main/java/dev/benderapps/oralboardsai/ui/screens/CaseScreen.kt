@@ -26,6 +26,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -126,6 +127,14 @@ fun CaseScreen(
             viewModel.hasStartedCase &&
             !viewModel.isPreparingDebrief
         ) {
+            scrollState.animateScrollTo(scrollState.maxValue)
+        }
+    }
+
+    // While dictating, keep the live transcript and Submit button in view as the text grows.
+    LaunchedEffect(speech.isRecordingResponse, speech.liveTranscript) {
+        if (speech.isRecordingResponse) {
+            withFrameNanos { }
             scrollState.animateScrollTo(scrollState.maxValue)
         }
     }

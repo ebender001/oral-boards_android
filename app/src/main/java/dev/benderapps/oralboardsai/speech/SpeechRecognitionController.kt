@@ -2,9 +2,9 @@ package dev.benderapps.oralboardsai.speech
 
 import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -13,14 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
+private const val TAG = "SpeechRecognition"
 private const val RESTART_DELAY_MILLIS = 150L
 private const val SPEECH_ACTIVITY_HOLD_MILLIS = 420L
 private const val SPEECH_RMS_THRESHOLD_DB = 2f
-private val EARCON_STREAMS = intArrayOf(
-    AudioManager.STREAM_MUSIC,
-    AudioManager.STREAM_NOTIFICATION,
-    AudioManager.STREAM_SYSTEM,
-)
 
 /**
  * Continuous dictation on top of [SpeechRecognizer].
@@ -38,8 +34,7 @@ class SpeechRecognitionController(private val appContext: Context) {
         private set
 
     private val mainHandler = Handler(Looper.getMainLooper())
-    private val audioManager = appContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    private var earconsMuted = false
+    private val earconMuter = EarconMuter(appContext)
     private var recognizer: SpeechRecognizer? = null
 
     private var dictatedResponsePrefix = ""
@@ -90,7 +85,7 @@ class SpeechRecognitionController(private val appContext: Context) {
 
         isRecordingResponse = true
         isDetectingSpeech = false
-        muteRecognizerEarcons()
+        earconMuter.mute()
         listen()
     }
 
@@ -108,7 +103,7 @@ class SpeechRecognitionController(private val appContext: Context) {
         isDetectingSpeech = false
         mainHandler.removeCallbacksAndMessages(null)
         releaseRecognizer()
-        unmuteRecognizerEarcons()
+        earconMuter.restore()
     }
 
     fun beginManualEditing() {
@@ -147,33 +142,6 @@ class SpeechRecognitionController(private val appContext: Context) {
             putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 3000L)
         }
         newRecognizer.startListening(intent)
-    }
-
-    /**
-     * The system recognizer plays a start/stop beep every time a session begins, and
-     * continuous dictation restarts sessions every few seconds. Mute the stream the
-     * beep plays on for the duration of dictation; [stop] always restores it.
-     */
-    private fun muteRecognizerEarcons() {
-        if (earconsMuted) return
-        earconsMuted = true
-        adjustEarconStreams(AudioManager.ADJUST_MUTE)
-    }
-
-    private fun unmuteRecognizerEarcons() {
-        if (!earconsMuted) return
-        earconsMuted = false
-        adjustEarconStreams(AudioManager.ADJUST_UNMUTE)
-    }
-
-    private fun adjustEarconStreams(direction: Int) {
-        for (stream in EARCON_STREAMS) {
-            try {
-                audioManager.adjustStreamVolume(stream, direction, 0)
-            } catch (_: SecurityException) {
-                // Some streams can't be changed under Do Not Disturb; skip them.
-            }
-        }
     }
 
     private fun releaseRecognizer() {
@@ -235,6 +203,7 @@ class SpeechRecognitionController(private val appContext: Context) {
                 SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> restartIfStillRecording()
 
                 else -> {
+                    Log.w(TAG, "Recognition error code $error")
                     stop()
                     reportError(messageFor(error))
                 }
@@ -253,6 +222,9 @@ class SpeechRecognitionController(private val appContext: Context) {
         SpeechRecognizer.ERROR_SERVER ->
             "Speech recognition needs a network connection right now. Check your connection and try again."
         SpeechRecognizer.ERROR_AUDIO -> "There was a problem recording audio. Please try again."
+        SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED,
+        SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE ->
+            "Speech recognition could not load your language. Check your connection, or download offline speech for your language in the Google app's settings."
         else -> "Speech recognition is not available right now."
     }
 
